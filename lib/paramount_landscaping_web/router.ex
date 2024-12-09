@@ -16,7 +16,12 @@ defmodule ParamountLandscapingWeb.Router do
 
   scope "/", ParamountLandscapingWeb do
     pipe_through :browser
+    live "/jobs", JobLive.Index, :index
+    live "/jobs/new", JobLive.Index, :new
+    live "/jobs/:id/edit", JobLive.Index, :edit
 
+    live "/jobs/:id", JobLive.Show, :show
+    live "/jobs/:id/show/edit", JobLive.Show, :edit
     get "/", PageController, :home
   end
 
