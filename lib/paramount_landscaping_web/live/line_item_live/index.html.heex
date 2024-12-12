@@ -1,0 +1,44 @@
+<.header>
+  Listing Line items
+  <:actions>
+    <.link patch={~p"/line_items/new"}>
+      <.button>New Line item</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="line_items"
+  rows={@streams.line_items}
+  row_click={fn {_id, line_item} -> JS.navigate(~p"/line_items/#{line_item}") end}
+>
+  <:col :let={{_id, line_item}} label="Material"><%= line_item.material %></:col>
+  <:col :let={{_id, line_item}} label="Unit cost"><%= line_item.unit_cost %></:col>
+  <:col :let={{_id, line_item}} label="Quantity"><%= line_item.quantity %></:col>
+  <:col :let={{_id, line_item}} label="Total"><%= line_item.total %></:col>
+  <:action :let={{_id, line_item}}>
+    <div class="sr-only">
+      <.link navigate={~p"/line_items/#{line_item}"}>Show</.link>
+    </div>
+    <.link patch={~p"/line_items/#{line_item}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, line_item}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: line_item.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="line_item-modal" show on_cancel={JS.patch(~p"/line_items")}>
+  <.live_component
+    module={ParamountLandscapingWeb.LineItemLive.FormComponent}
+    id={@line_item.id || :new}
+    title={@page_title}
+    action={@live_action}
+    line_item={@line_item}
+    patch={~p"/line_items"}
+  />
+</.modal>

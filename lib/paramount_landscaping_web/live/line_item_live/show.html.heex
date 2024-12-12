@@ -1,0 +1,29 @@
+<.header>
+  Line item <%= @line_item.id %>
+  <:subtitle>This is a line_item record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/line_items/#{@line_item}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit line_item</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Material"><%= @line_item.material %></:item>
+  <:item title="Unit cost"><%= @line_item.unit_cost %></:item>
+  <:item title="Quantity"><%= @line_item.quantity %></:item>
+  <:item title="Total"><%= @line_item.total %></:item>
+</.list>
+
+<.back navigate={~p"/line_items"}>Back to line_items</.back>
+
+<.modal :if={@live_action == :edit} id="line_item-modal" show on_cancel={JS.patch(~p"/line_items/#{@line_item}")}>
+  <.live_component
+    module={ParamountLandscapingWeb.LineItemLive.FormComponent}
+    id={@line_item.id}
+    title={@page_title}
+    action={@live_action}
+    line_item={@line_item}
+    patch={~p"/line_items/#{@line_item}"}
+  />
+</.modal>

@@ -23,6 +23,14 @@ defmodule ParamountLandscapingWeb.Router do
     live "/jobs/:id", JobLive.Show, :show
     live "/jobs/:id/show/edit", JobLive.Show, :edit
     get "/", PageController, :home
+    get "/whitesheet", PageController, :whitesheet
+
+    live "/line_items", LineItemLive.Index, :index
+    live "/line_items/new", LineItemLive.Index, :new
+    live "/line_items/:id/edit", LineItemLive.Index, :edit
+
+    live "/line_items/:id", LineItemLive.Show, :show
+    live "/line_items/:id/show/edit", LineItemLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.
