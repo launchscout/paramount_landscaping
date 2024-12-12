@@ -7,7 +7,8 @@ defmodule ParamountLandscaping.LineItems.LineItem do
     field :material, :string
     field :unit_cost, :integer
     field :quantity, :decimal
-    field :job_id, :id
+
+    belongs_to :job, ParamountLandscaping.Jobs.Job
 
     timestamps(type: :utc_datetime)
   end
@@ -15,7 +16,7 @@ defmodule ParamountLandscaping.LineItems.LineItem do
   @doc false
   def changeset(line_item, attrs) do
     line_item
-    |> cast(attrs, [:material, :unit_cost, :quantity, :total])
-    |> validate_required([:material, :unit_cost, :quantity, :total])
+    |> cast(attrs, [:material, :unit_cost, :quantity, :total, :job_id])
+    |> validate_required([:material, :unit_cost, :quantity, :total, :job_id])
   end
 end
