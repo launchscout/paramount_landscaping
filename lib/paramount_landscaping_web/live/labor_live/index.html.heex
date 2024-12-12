@@ -1,0 +1,43 @@
+<.header>
+  Listing Labors
+  <:actions>
+    <.link patch={~p"/labors/new"}>
+      <.button>New Labor</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="labors"
+  rows={@streams.labors}
+  row_click={fn {_id, labor} -> JS.navigate(~p"/labors/#{labor}") end}
+>
+  <:col :let={{_id, labor}} label="Worker"><%= labor.worker %></:col>
+  <:col :let={{_id, labor}} label="Hours"><%= labor.hours %></:col>
+  <:col :let={{_id, labor}} label="Per hour cost"><%= labor.per_hour_cost %></:col>
+  <:action :let={{_id, labor}}>
+    <div class="sr-only">
+      <.link navigate={~p"/labors/#{labor}"}>Show</.link>
+    </div>
+    <.link patch={~p"/labors/#{labor}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, labor}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: labor.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="labor-modal" show on_cancel={JS.patch(~p"/labors")}>
+  <.live_component
+    module={ParamountLandscapingWeb.LaborLive.FormComponent}
+    id={@labor.id || :new}
+    title={@page_title}
+    action={@live_action}
+    labor={@labor}
+    patch={~p"/labors"}
+  />
+</.modal>

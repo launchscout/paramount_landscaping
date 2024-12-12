@@ -31,6 +31,13 @@ defmodule ParamountLandscapingWeb.Router do
 
     live "/line_items/:id", LineItemLive.Show, :show
     live "/line_items/:id/show/edit", LineItemLive.Show, :edit
+
+    live "/labors", LaborLive.Index, :index
+    live "/labors/new", LaborLive.Index, :new
+    live "/labors/:id/edit", LaborLive.Index, :edit
+
+    live "/labors/:id", LaborLive.Show, :show
+    live "/labors/:id/show/edit", LaborLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.

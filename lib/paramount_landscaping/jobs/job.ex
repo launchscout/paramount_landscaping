@@ -8,6 +8,7 @@ defmodule ParamountLandscaping.Jobs.Job do
     field :description, :string
 
     has_many :line_items, ParamountLandscaping.LineItems.LineItem
+    has_many :labors, ParamountLandscaping.Labors.Labor
 
     timestamps(type: :utc_datetime)
   end
