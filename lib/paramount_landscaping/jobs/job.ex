@@ -7,16 +7,18 @@ defmodule ParamountLandscaping.Jobs.Job do
     field :address, :string
     field :description, :string
 
-    has_many :line_items, ParamountLandscaping.LineItems.LineItem
-    has_many :labors, ParamountLandscaping.Labors.Labor
+    has_many :line_items, ParamountLandscaping.LineItems.LineItem, on_replace: :delete
+    has_many :labors, ParamountLandscaping.Labors.Labor, on_replace: :delete
 
-    timestamps(type: :utc_datetime)
+    timestamps()
   end
 
   @doc false
   def changeset(job, attrs) do
     job
-    |> cast(attrs, [:address, :name, :description])
-    |> validate_required([:address, :name, :description])
+    |> cast(attrs, [:name, :address, :description])
+    |> validate_required([:name, :address])
+    |> cast_assoc(:line_items, with: &ParamountLandscaping.LineItems.LineItem.changeset/2)
+    |> cast_assoc(:labors, with: &ParamountLandscaping.Labors.Labor.changeset/2)
   end
 end

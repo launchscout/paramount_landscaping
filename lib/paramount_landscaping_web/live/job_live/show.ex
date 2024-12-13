@@ -13,7 +13,7 @@ defmodule ParamountLandscapingWeb.JobLive.Show do
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:job, Jobs.get_job!(id))}
+     |> assign(:job, Jobs.get_job!(id, preload: [:line_items, :labors]))}
   end
 
   defp page_title(:show), do: "Show Job"

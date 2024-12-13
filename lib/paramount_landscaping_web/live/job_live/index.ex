@@ -6,7 +6,7 @@ defmodule ParamountLandscapingWeb.JobLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, stream(socket, :jobs, Jobs.list_jobs())}
+    {:ok, stream(socket, :jobs, Jobs.list_jobs(preload: [:line_items, :labors]))}
   end
 
   @impl true
@@ -17,7 +17,7 @@ defmodule ParamountLandscapingWeb.JobLive.Index do
   defp apply_action(socket, :edit, %{"id" => id}) do
     socket
     |> assign(:page_title, "Edit Job")
-    |> assign(:job, Jobs.get_job!(id))
+    |> assign(:job, Jobs.get_job!(id, preload: [:line_items, :labors]))
   end
 
   defp apply_action(socket, :new, _params) do
@@ -34,12 +34,13 @@ defmodule ParamountLandscapingWeb.JobLive.Index do
 
   @impl true
   def handle_info({ParamountLandscapingWeb.JobLive.FormComponent, {:saved, job}}, socket) do
+    job = Jobs.get_job!(job.id, preload: [:line_items, :labors])
     {:noreply, stream_insert(socket, :jobs, job)}
   end
 
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
-    job = Jobs.get_job!(id)
+    job = Jobs.get_job!(id, preload: [:line_items, :labors])
     {:ok, _} = Jobs.delete_job(job)
 
     {:noreply, stream_delete(socket, :jobs, job)}

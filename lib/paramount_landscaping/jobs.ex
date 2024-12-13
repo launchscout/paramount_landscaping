@@ -17,8 +17,10 @@ defmodule ParamountLandscaping.Jobs do
       [%Job{}, ...]
 
   """
-  def list_jobs do
-    Repo.all(Job)
+  def list_jobs(opts \\ []) do
+    Job
+    |> preload_associations(opts)
+    |> Repo.all()
   end
 
   @doc """
@@ -35,7 +37,11 @@ defmodule ParamountLandscaping.Jobs do
       ** (Ecto.NoResultsError)
 
   """
-  def get_job!(id), do: Repo.get!(Job, id)
+  def get_job!(id, opts \\ []) do
+    Job
+    |> preload_associations(opts)
+    |> Repo.get!(id)
+  end
 
   @doc """
   Creates a job.
@@ -100,5 +106,13 @@ defmodule ParamountLandscaping.Jobs do
   """
   def change_job(%Job{} = job, attrs \\ %{}) do
     Job.changeset(job, attrs)
+  end
+
+  # Private helper to handle preloading
+  defp preload_associations(query, opts) do
+    case Keyword.get(opts, :preload) do
+      nil -> query
+      preloads -> from(q in query, preload: ^preloads)
+    end
   end
 end
