@@ -14,6 +14,33 @@
   <:item title="Description"><%= @job.description %></:item>
 </.list>
 
+<.table id="line_items" rows={@job.line_items}>
+  <:col :let={item} label="Material"><%= item.material %></:col>
+  <:col :let={item} label="Quantity"><%= item.quantity %></:col>
+  <:col :let={item} label="Unit Price"><%= item.unit_cost %></:col>
+  <:col :let={item} label="Total">
+    <%= Number.Currency.number_to_currency(item.total) %>
+  </:col>
+</.table>
+
+<div class="mt-4 text-right">
+  <p class="font-semibold">Materials Total: <%= Number.Currency.number_to_currency(ParamountLandscaping.Jobs.Job.calculate_materials_total(@job)) %></p>
+</div>
+
+<.table id="labors" rows={@job.labors}>
+  <:col :let={labor} label="Worker"><%= labor.worker %></:col>
+  <:col :let={labor} label="Hours"><%= labor.hours %></:col>
+  <:col :let={labor} label="Per Hour Cost"><%= labor.per_hour_cost %></:col>
+  <:col :let={labor} label="Total">
+    <%= Number.Currency.number_to_currency(Decimal.mult(Decimal.new(labor.hours), Decimal.new(labor.per_hour_cost))) %>
+  </:col>
+</.table>
+
+<div class="mt-4 text-right space-y-2">
+  <p class="font-semibold">Labor Total: <%= Number.Currency.number_to_currency(ParamountLandscaping.Jobs.Job.calculate_labor_total(@job)) %></p>
+  <p class="text-lg font-bold">Job Total: <%= Number.Currency.number_to_currency(ParamountLandscaping.Jobs.Job.calculate_job_total(@job)) %></p>
+</div>
+
 <.back navigate={~p"/jobs"}>Back to jobs</.back>
 
 <.modal :if={@live_action == :edit} id="job-modal" show on_cancel={JS.patch(~p"/jobs/#{@job}")}>

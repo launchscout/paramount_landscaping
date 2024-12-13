@@ -142,55 +142,6 @@ defmodule ParamountLandscapingWeb.JobLive.FormComponent do
     {:noreply, assign(socket, form: to_form(changeset))}
   end
 
-  def handle_event("add_line_item", _, socket) do
-    changeset =
-      socket.assigns.form.data
-      |> Jobs.change_job(socket.assigns.form.params || %{})
-      |> Ecto.Changeset.put_assoc(:line_items, [
-        %ParamountLandscaping.LineItems.LineItem{} | socket.assigns.form.data.line_items || []
-      ])
-
-    {:noreply, assign(socket, form: to_form(changeset))}
-  end
-
-  def handle_event("remove_line_item", %{"index" => index}, socket) do
-    params = socket.assigns.form.params || %{}
-    index = String.to_integer(index)
-
-    line_items_params = Map.get(params, "line_items", %{})
-    updated_params = put_in(params, ["line_items", to_string(index), "delete"], "true")
-
-    changeset =
-      socket.assigns.job
-      |> Jobs.change_job(updated_params)
-
-    {:noreply, assign(socket, form: to_form(changeset))}
-  end
-
-  def handle_event("add_labor", _, socket) do
-    changeset =
-      socket.assigns.form.data
-      |> Jobs.change_job(socket.assigns.form.params || %{})
-      |> Ecto.Changeset.put_assoc(:labors, [
-        %ParamountLandscaping.Labors.Labor{} | socket.assigns.form.data.labors || []
-      ])
-
-    {:noreply, assign(socket, form: to_form(changeset))}
-  end
-
-  def handle_event("remove_labor", %{"index" => index}, socket) do
-    params = socket.assigns.form.params || %{}
-    index = String.to_integer(index)
-
-    updated_params = put_in(params, ["labors", to_string(index), "delete"], "true")
-
-    changeset =
-      socket.assigns.job
-      |> Jobs.change_job(updated_params)
-
-    {:noreply, assign(socket, form: to_form(changeset))}
-  end
-
   def handle_event("save", %{"job" => job_params}, socket) do
     save_job(socket, socket.assigns.action, job_params)
   end
