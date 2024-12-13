@@ -32,8 +32,7 @@ defmodule ParamountLandscapingWeb.JobLive.FormComponent do
                 <.input field={f_item[:material]} type="text" label="Material" />
                 <.input field={f_item[:unit_cost]} type="number" label="Unit Cost" />
                 <.input field={f_item[:quantity]} type="number" label="Quantity" step="any" />
-                <.input field={f_item[:sort_order]} type="hidden" value={f_item.index} />
-                <.input field={f_item[:delete]} type="hidden" />
+                <input type="hidden" name="job[line_items_order][]" value={f_item.index} />
                 <div class="mb-6">
                   <button
                     type="button"
@@ -48,14 +47,26 @@ defmodule ParamountLandscapingWeb.JobLive.FormComponent do
               </div>
             </.inputs_for>
           </div>
-          <button
-            type="button"
-            class="mt-2 text-sm text-blue-600"
-            phx-click="add_line_item"
-            phx-target={@myself}
-          >
-            Add Line Item
-          </button>
+          <label class="block cursor-pointer u-color-primary">
+            <input type="checkbox" name="job[line_items_order][]" class="hidden" />
+            <span class="flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="#4467D8"
+                class="w-4 h-4"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
+              </svg>
+              <span>Add Line Item</span>
+            </span>
+          </label>
         </div>
 
         <div class="mt-8">
@@ -113,10 +124,6 @@ defmodule ParamountLandscapingWeb.JobLive.FormComponent do
 
   @impl true
   def update(%{job: job} = assigns, socket) do
-    job = %{job |
-      line_items: job.line_items || [],
-      labors: job.labors || []
-    }
     changeset = Jobs.change_job(job)
 
     {:ok,
