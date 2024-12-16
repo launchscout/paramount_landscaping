@@ -11,9 +11,11 @@ defmodule ParamountLandscaping.JobsFixtures do
     {:ok, job} =
       attrs
       |> Enum.into(%{
+        name: "some name",
         address: "some address",
         description: "some description",
-        name: "some name"
+        line_items: [],
+        labors: []
       })
       |> ParamountLandscaping.Jobs.create_job()
 

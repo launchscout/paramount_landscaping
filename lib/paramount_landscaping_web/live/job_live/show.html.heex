@@ -24,7 +24,7 @@
 </.table>
 
 <div class="mt-4 text-right">
-  <p class="font-semibold">Materials Total: <%= Number.Currency.number_to_currency(ParamountLandscaping.Jobs.Job.calculate_materials_total(@job)) %></p>
+  <p class="font-semibold">Materials Total: <%= Number.Currency.number_to_currency(ParamountLandscaping.Jobs.calculate_materials_total(@job)) %></p>
 </div>
 
 <.table id="labors" rows={@job.labors}>
@@ -37,8 +37,8 @@
 </.table>
 
 <div class="mt-4 text-right space-y-2">
-  <p class="font-semibold">Labor Total: <%= Number.Currency.number_to_currency(ParamountLandscaping.Jobs.Job.calculate_labor_total(@job)) %></p>
-  <p class="text-lg font-bold">Job Total: <%= Number.Currency.number_to_currency(ParamountLandscaping.Jobs.Job.calculate_job_total(@job)) %></p>
+  <p class="font-semibold">Labor Total: <%= Number.Currency.number_to_currency(ParamountLandscaping.Jobs.calculate_labor_total(@job)) %></p>
+  <p class="text-lg font-bold">Job Total: <%= Number.Currency.number_to_currency(ParamountLandscaping.Jobs.calculate_job_total(@job)) %></p>
 </div>
 
 <.back navigate={~p"/jobs"}>Back to jobs</.back>

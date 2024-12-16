@@ -1,0 +1,44 @@
+{
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "db",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "container db",
+      "database": "coa_opal_dev",
+      "username": "postgres",
+      "password": "postgres"
+    },
+    {
+      "pgOptions": {
+        "ssl": true
+      },
+      "previewLimit": 50,
+      "server": "coa-hhaa-dev-postgresql-server.postgres.database.azure.com",
+      "port": 5432,
+      "askForPassword": true,
+      "driver": "PostgreSQL",
+      "name": "Azure Testing DB",
+      "database": "coahhaadevsqldb",
+      "username": "psqladmin@coa-hhaa-dev-postgresql-server.postgres.database.azure.com"
+    },
+    {
+      "pgOptions": {
+        "ssl": true
+      },
+      "previewLimit": 50,
+      "server": "addnaidedevpostgres.postgres.database.azure.com",
+      "port": 5432,
+      "askForPassword": true,
+      "driver": "PostgreSQL",
+      "name": "Azure Dev DB",
+      "username": "coapgadm",
+      "database": "addnaide-dev-database"
+    }
+  ],
+  "editor.tabSize": 2,
+  "files.associations": {
+    "*.heex": "phoenix-heex"
+  }
+}
