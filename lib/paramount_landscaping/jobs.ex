@@ -120,7 +120,7 @@ defmodule ParamountLandscaping.Jobs do
     Enum.reduce(job.labors, Decimal.new(0), fn labor, acc ->
       labor_cost = Decimal.mult(Decimal.new(labor.hours), Decimal.new(labor.per_hour_cost))
       Decimal.add(acc, labor_cost)
-    end)
+    end) |> Decimal.round(2)
   end
 
   def calculate_materials_total(job) do
@@ -133,5 +133,29 @@ defmodule ParamountLandscaping.Jobs do
     labor_total = calculate_labor_total(job)
     materials_total = calculate_materials_total(job)
     Decimal.add(labor_total, materials_total)
+  end
+
+  # Add this function to ParamountLandscaping.Jobs
+  def retail_labor_total(job) do
+    total_hours =
+      Enum.reduce(job.labors, Decimal.new(0), fn labor, acc ->
+        Decimal.add(acc, labor.hours)
+      end)
+
+    Decimal.mult(total_hours, Decimal.new(75)) |> Decimal.round(2)
+  end
+
+  def retail_materials_total(job) do
+    materials_total = calculate_materials_total(job)
+
+    Decimal.mult(materials_total, Decimal.new("1.5"))
+    |> Decimal.round(2)
+  end
+
+  def retail_total(job) do
+    labor = retail_labor_total(job)
+    materials = retail_materials_total(job)
+    Decimal.add(labor, materials)
+    |> Decimal.round(2)
   end
 end

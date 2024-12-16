@@ -10,12 +10,12 @@ defmodule ParamountLandscaping.JobsTest do
 
     test "list_jobs/0 returns all jobs" do
       job = insert(:job)
-      assert Jobs.list_jobs() == [job]
+      assert Jobs.list_jobs(preload: [:labors, :line_items]) == [job]
     end
 
     test "get_job!/1 returns the job with given id" do
       job = insert(:job)
-      assert Jobs.get_job!(job.id) == job
+      assert Jobs.get_job!(job.id, preload: [:labors, :line_items]) == job
     end
 
     test "create_job/1 with valid data creates a job" do
@@ -44,7 +44,7 @@ defmodule ParamountLandscaping.JobsTest do
     test "update_job/2 with invalid data returns error changeset" do
       job = insert(:job)
       assert {:error, %Ecto.Changeset{}} = Jobs.update_job(job, @invalid_attrs)
-      assert job == Jobs.get_job!(job.id)
+      assert job == Jobs.get_job!(job.id, preload: [:labors, :line_items])
     end
 
     test "delete_job/1 deletes the job" do
@@ -108,6 +108,60 @@ defmodule ParamountLandscaping.JobsTest do
       )
 
       assert Jobs.calculate_job_total(job) == Decimal.new("252.50")  # 50.00 + 202.50
+    end
+
+    test "retail_labor_total/1 returns total hours times 75" do
+      job = insert(:job, labors: [
+        build(:labor,
+          hours: Decimal.new("4.5")
+        ),
+        build(:labor,
+          hours: Decimal.new("3.0")
+        )
+      ])
+
+      # 7.5 total hours * 75 = 562.50
+      assert Jobs.retail_labor_total(job) == Decimal.new("562.50")
+    end
+
+    test "retail_materials_total/1 returns materials total times 1.5" do
+      job = insert(:job, line_items: [
+        build(:line_item,
+          quantity: Decimal.new("2"),
+          unit_cost: 25,
+          total: Decimal.new("50.00")
+        ),
+        build(:line_item,
+          quantity: Decimal.new("5"),
+          unit_cost: 12,
+          total: Decimal.new("60.00")
+        )
+      ])
+
+      # (50.00 + 60.00) * 1.5 = 165.00
+      assert Jobs.retail_materials_total(job) == Decimal.new("165.00")
+    end
+
+    test "retail_total/1 returns sum of retail_labor_total and retail_materials_total" do
+      job = insert(:job,
+        line_items: [
+          build(:line_item,
+            quantity: Decimal.new("2"),
+            unit_cost: 25,
+            total: Decimal.new("50.00")
+          )
+        ],
+        labors: [
+          build(:labor,
+            hours: Decimal.new("4.5")
+          )
+        ]
+      )
+
+      # retail_labor_total: 4.5 hours * 75 = 337.50
+      # retail_materials_total: 50.00 * 1.5 = 75.00
+      # total: 337.50 + 75.00 = 412.50
+      assert Jobs.retail_total(job) == Decimal.new("412.50")
     end
   end
 end

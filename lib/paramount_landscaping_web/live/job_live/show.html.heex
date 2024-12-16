@@ -39,6 +39,13 @@
 <div class="mt-4 text-right space-y-2">
   <p class="font-semibold">Labor Total: <%= Number.Currency.number_to_currency(ParamountLandscaping.Jobs.calculate_labor_total(@job)) %></p>
   <p class="text-lg font-bold">Job Total: <%= Number.Currency.number_to_currency(ParamountLandscaping.Jobs.calculate_job_total(@job)) %></p>
+  
+  <div class="mt-8 border-t pt-4">
+    <h3 class="text-lg font-bold mb-2">Retail Pricing</h3>
+    <p class="font-semibold">Retail Materials Total: <%= Number.Currency.number_to_currency(ParamountLandscaping.Jobs.retail_materials_total(@job)) %></p>
+    <p class="font-semibold">Retail Labor Total: <%= Number.Currency.number_to_currency(ParamountLandscaping.Jobs.retail_labor_total(@job)) %></p>
+    <p class="text-lg font-bold">Retail Total: <%= Number.Currency.number_to_currency(ParamountLandscaping.Jobs.retail_total(@job)) %></p>
+  </div>
 </div>
 
 <.back navigate={~p"/jobs"}>Back to jobs</.back>
