@@ -28,12 +28,18 @@ defmodule ParamountLandscapingWeb.JobLive.FormComponent do
           <h3 class="text-lg font-semibold">Line Items</h3>
           <div class="mt-4 space-y-4" id="line-items">
             <.inputs_for :let={f_item} field={@form[:line_items]}>
-              <div class="flex items-end gap-4">
-                <.input field={f_item[:material]} type="text" label="Material" />
-                <.input field={f_item[:unit_cost]} type="number" label="Unit Cost" />
-                <.input field={f_item[:quantity]} type="number" label="Quantity" step="any" />
+              <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 items-end">
+                <div>
+                  <.input field={f_item[:material]} type="text" label="Material" />
+                </div>
+                <div>
+                  <.input field={f_item[:unit_cost]} type="number" label="Unit Cost" />
+                </div>
+                <div>
+                  <.input field={f_item[:quantity]} type="number" label="Quantity" step="any" />
+                </div>
                 <input type="hidden" name="job[line_items_order][]" value={f_item.index} />
-                <div class="mb-6">
+                <div class="sm:justify-self-end">
                   <label class="icons block cursor-pointer">
                     <input type="checkbox" name="job[line_items_delete][]" value={f_item.index} class="hidden" />
                     <svg
@@ -81,12 +87,18 @@ defmodule ParamountLandscapingWeb.JobLive.FormComponent do
           <h3 class="text-lg font-semibold">Labor Entries</h3>
           <div class="mt-4 space-y-4" id="labors">
             <.inputs_for :let={f_labor} field={@form[:labors]}>
-              <div class="flex items-end gap-4">
-                <.input field={f_labor[:worker]} type="text" label="Worker" />
-                <.input field={f_labor[:hours]} type="number" label="Hours" step="any" />
-                <.input field={f_labor[:per_hour_cost]} type="number" label="Per Hour Cost" />
+              <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 items-end">
+                <div>
+                  <.input field={f_labor[:worker]} type="text" label="Worker" />
+                </div>
+                <div>
+                  <.input field={f_labor[:hours]} type="number" label="Hours" step="any" />
+                </div>
+                <div>
+                  <.input field={f_labor[:per_hour_cost]} type="number" label="Per Hour Cost" />
+                </div>
                 <input type="hidden" name="job[labor_order][]" value={f_labor.index} />
-                <div class="mb-6">
+                <div class="sm:justify-self-end">
                   <label class="icons block cursor-pointer">
                     <input type="checkbox" name="job[labor_delete][]" value={f_labor.index} class="hidden" />
                     <svg
