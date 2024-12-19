@@ -34,15 +34,23 @@ defmodule ParamountLandscapingWeb.JobLive.FormComponent do
                 <.input field={f_item[:quantity]} type="number" label="Quantity" step="any" />
                 <input type="hidden" name="job[line_items_order][]" value={f_item.index} />
                 <div class="mb-6">
-                  <button
-                    type="button"
-                    class="text-red-600"
-                    phx-click="remove_line_item"
-                    phx-value-index={f_item.index}
-                    phx-target={@myself}
-                  >
-                    Remove
-                  </button>
+                  <label class="icons block cursor-pointer">
+                    <input type="checkbox" name="job[line_items_delete][]" value={f_item.index} class="hidden" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="#4467D8"
+                      class="size-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                      />
+                    </svg>
+                  </label>
                 </div>
               </div>
             </.inputs_for>
@@ -79,15 +87,23 @@ defmodule ParamountLandscapingWeb.JobLive.FormComponent do
                 <.input field={f_labor[:per_hour_cost]} type="number" label="Per Hour Cost" />
                 <input type="hidden" name="job[labor_order][]" value={f_labor.index} />
                 <div class="mb-6">
-                  <button
-                    type="button"
-                    class="text-red-600"
-                    phx-click="remove_labor"
-                    phx-value-index={f_labor.index}
-                    phx-target={@myself}
-                  >
-                    Remove
-                  </button>
+                  <label class="icons block cursor-pointer">
+                    <input type="checkbox" name="job[labor_delete][]" value={f_labor.index} class="hidden" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="#4467D8"
+                      class="size-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                      />
+                    </svg>
+                  </label>
                 </div>
               </div>
             </.inputs_for>
@@ -144,6 +160,32 @@ defmodule ParamountLandscapingWeb.JobLive.FormComponent do
 
   def handle_event("save", %{"job" => job_params}, socket) do
     save_job(socket, socket.assigns.action, job_params)
+  end
+
+  def handle_event("remove_line_item", %{"index" => index}, socket) do
+    line_items = socket.assigns.form.data.line_items
+    idx = String.to_integer(index)
+    updated_items = List.delete_at(line_items, idx)
+
+    changeset =
+      socket.assigns.job
+      |> Jobs.change_job(%{})
+      |> Ecto.Changeset.put_assoc(:line_items, updated_items)
+
+    {:noreply, assign(socket, form: to_form(changeset))}
+  end
+
+  def handle_event("remove_labor", %{"index" => index}, socket) do
+    labors = socket.assigns.form.data.labors
+    idx = String.to_integer(index)
+    updated_labors = List.delete_at(labors, idx)
+
+    changeset =
+      socket.assigns.job
+      |> Jobs.change_job(%{})
+      |> Ecto.Changeset.put_assoc(:labors, updated_labors)
+
+    {:noreply, assign(socket, form: to_form(changeset))}
   end
 
   defp save_job(socket, :edit, job_params) do
