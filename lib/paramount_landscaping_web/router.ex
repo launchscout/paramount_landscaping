@@ -22,7 +22,7 @@ defmodule ParamountLandscapingWeb.Router do
 
     live "/jobs/:id", JobLive.Show, :show
     live "/jobs/:id/show/edit", JobLive.Show, :edit
-    get "/", PageController, :home
+    live "/", JobLive.Index, :index
     get "/whitesheet", PageController, :whitesheet
 
     live "/line_items", LineItemLive.Index, :index
