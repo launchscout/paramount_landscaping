@@ -14,8 +14,12 @@ defmodule ParamountLandscapingWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :require_authenticated_user do
+    plug ParamountLandscapingWeb.AuthPlug
+  end
+
   scope "/", ParamountLandscapingWeb do
-    pipe_through :browser
+    pipe_through [:browser, :require_authenticated_user]
     live "/jobs", JobLive.Index, :index
     live "/jobs/new", JobLive.Index, :new
     live "/jobs/:id/edit", JobLive.Index, :edit
@@ -38,6 +42,14 @@ defmodule ParamountLandscapingWeb.Router do
 
     live "/labors/:id", LaborLive.Show, :show
     live "/labors/:id/show/edit", LaborLive.Show, :edit
+  end
+
+  scope "/auth", ParamountLandscapingWeb do
+    pipe_through :browser
+
+    get "/:provider", AuthController, :request
+    get "/:provider/callback", AuthController, :callback
+    delete "/signout", AuthController, :signout
   end
 
   # Other scopes may use custom stacks.

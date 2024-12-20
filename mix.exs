@@ -55,11 +55,13 @@ defmodule ParamountLandscaping.MixProject do
       {:telemetry_metrics, "~> 1.0"},
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.20"},
-      {:jason, "~> 1.2"},
+      {:jason, "~> 1.4"},
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
       {:number, "~> 1.0"},
-      {:ex_machina, "~> 2.7.0", only: :test}
+      {:ex_machina, "~> 2.7.0", only: :test},
+      {:ueberauth, "~> 0.10.5"},
+      {:ueberauth_google, "~> 0.10.3"}
     ]
   end
 

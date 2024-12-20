@@ -4,6 +4,8 @@ defmodule ParamountLandscapingWeb.JobLive.Index do
   alias ParamountLandscaping.Jobs
   alias ParamountLandscaping.Jobs.Job
 
+  on_mount {ParamountLandscapingWeb.LiveAuth, :default}
+
   @impl true
   def mount(_params, _session, socket) do
     {:ok, stream(socket, :jobs, Jobs.list_jobs(preload: [:line_items, :labors]))}
