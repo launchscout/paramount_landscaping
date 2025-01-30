@@ -52,6 +52,13 @@ defmodule ParamountLandscapingWeb.Router do
 
     live "/stops/:id", StopLive.Show, :show
     live "/stops/:id/show/edit", StopLive.Show, :edit
+
+    live "/snow_jobs", SnowJobLive.Index, :index
+    live "/snow_jobs/new", SnowJobLive.Index, :new
+    live "/snow_jobs/:id/edit", SnowJobLive.Index, :edit
+
+    live "/snow_jobs/:id", SnowJobLive.Show, :show
+    live "/snow_jobs/:id/show/edit", SnowJobLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.

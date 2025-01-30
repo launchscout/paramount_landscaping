@@ -6,6 +6,7 @@ defmodule ParamountLandscaping.Routes.Stop do
     field :name, :string
     field :address, :string
     field :walk, :boolean, default: false
+    field :capacity, :integer
 
     belongs_to :route, ParamountLandscaping.Routes.Route
     timestamps(type: :utc_datetime)
@@ -14,7 +15,7 @@ defmodule ParamountLandscaping.Routes.Stop do
   @doc false
   def changeset(stop, attrs) do
     stop
-    |> cast(attrs, [:name, :address, :walk, :route_id])
+    |> cast(attrs, [:name, :address, :walk, :route_id, :capacity])
     |> validate_required([:name, :address, :walk])
     |> foreign_key_constraint(:route_id)
   end

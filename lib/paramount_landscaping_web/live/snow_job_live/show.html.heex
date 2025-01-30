@@ -1,0 +1,26 @@
+<.header>
+  Snow job <%= @snow_job.id %>
+  <:subtitle>This is a snow_job record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/snow_jobs/#{@snow_job}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit snow_job</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Date"><%= @snow_job.date %></:item>
+</.list>
+
+<.back navigate={~p"/snow_jobs"}>Back to snow_jobs</.back>
+
+<.modal :if={@live_action == :edit} id="snow_job-modal" show on_cancel={JS.patch(~p"/snow_jobs/#{@snow_job}")}>
+  <.live_component
+    module={ParamountLandscapingWeb.SnowJobLive.FormComponent}
+    id={@snow_job.id}
+    title={@page_title}
+    action={@live_action}
+    snow_job={@snow_job}
+    patch={~p"/snow_jobs/#{@snow_job}"}
+  />
+</.modal>

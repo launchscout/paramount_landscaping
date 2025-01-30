@@ -19,21 +19,26 @@ defmodule ParamountLandscapingWeb.RouteLive.FormComponent do
         phx-change="validate"
         phx-submit="save"
       >
-        <.input field={@form[:name]} type="text" label="Name" />
+        <div class="max-w-xs">
+          <.input field={@form[:name]} type="text" label="Name" />
+        </div>
 
         <div class="mt-8">
           <h3 class="text-lg font-semibold">Stops</h3>
           <div class="mt-4 space-y-4" id="stops">
             <.inputs_for :let={f_stop} field={@form[:stops]}>
               <div class="grid grid-cols-12 gap-4 items-end">
-                <div class="col-span-4">
+                <div class="col-span-3">
                   <.input field={f_stop[:name]} type="text" label="Name" />
                 </div>
-                <div class="col-span-5">
+                <div class="col-span-4">
                   <.input field={f_stop[:address]} type="text" label="Address" />
                 </div>
                 <div class="col-span-2">
                   <.input field={f_stop[:walk]} type="checkbox" label="Walk" />
+                </div>
+                <div class="col-span-2">
+                  <.input field={f_stop[:capacity]} type="number" label="Capacity" />
                 </div>
                 <input type="hidden" name="route[stops_order][]" value={f_stop.index} />
                 <div class="col-span-1 justify-self-end">

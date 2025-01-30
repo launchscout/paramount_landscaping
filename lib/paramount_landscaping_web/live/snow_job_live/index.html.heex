@@ -1,0 +1,41 @@
+<.header>
+  Listing Snow jobs
+  <:actions>
+    <.link patch={~p"/snow_jobs/new"}>
+      <.button>New Snow job</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="snow_jobs"
+  rows={@streams.snow_jobs}
+  row_click={fn {_id, snow_job} -> JS.navigate(~p"/snow_jobs/#{snow_job}") end}
+>
+  <:col :let={{_id, snow_job}} label="Date"><%= snow_job.date %></:col>
+  <:action :let={{_id, snow_job}}>
+    <div class="sr-only">
+      <.link navigate={~p"/snow_jobs/#{snow_job}"}>Show</.link>
+    </div>
+    <.link patch={~p"/snow_jobs/#{snow_job}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, snow_job}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: snow_job.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="snow_job-modal" show on_cancel={JS.patch(~p"/snow_jobs")}>
+  <.live_component
+    module={ParamountLandscapingWeb.SnowJobLive.FormComponent}
+    id={@snow_job.id || :new}
+    title={@page_title}
+    action={@live_action}
+    snow_job={@snow_job}
+    patch={~p"/snow_jobs"}
+  />
+</.modal>
