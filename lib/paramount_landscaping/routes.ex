@@ -18,7 +18,9 @@ defmodule ParamountLandscaping.Routes do
 
   """
   def list_routes do
-    Repo.all(Route)
+    Route
+    |> preload(:stops)
+    |> Repo.all()
   end
 
   @doc """
@@ -35,7 +37,11 @@ defmodule ParamountLandscaping.Routes do
       ** (Ecto.NoResultsError)
 
   """
-  def get_route!(id), do: Repo.get!(Route, id)
+  def get_route!(id) do
+    Route
+    |> preload(:stops)
+    |> Repo.get!(id)
+  end
 
   @doc """
   Creates a route.
@@ -53,6 +59,10 @@ defmodule ParamountLandscaping.Routes do
     %Route{}
     |> Route.changeset(attrs)
     |> Repo.insert()
+    |> case do
+      {:ok, route} -> {:ok, Repo.preload(route, :stops)}
+      error -> error
+    end
   end
 
   @doc """
@@ -71,6 +81,10 @@ defmodule ParamountLandscaping.Routes do
     route
     |> Route.changeset(attrs)
     |> Repo.update()
+    |> case do
+      {:ok, route} -> {:ok, Repo.preload(route, :stops)}
+      error -> error
+    end
   end
 
   @doc """

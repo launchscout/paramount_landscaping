@@ -36,8 +36,8 @@ defmodule ParamountLandscapingWeb.RouteLiveTest do
              |> render_change() =~ "can&#39;t be blank"
 
       assert index_live
-             |> form("#route-form", route: @create_attrs)
-             |> render_submit()
+        |> form("#route-form", route: @create_attrs)
+        |> render_submit()
 
       assert_patch(index_live, ~p"/routes")
 
@@ -59,8 +59,8 @@ defmodule ParamountLandscapingWeb.RouteLiveTest do
              |> render_change() =~ "can&#39;t be blank"
 
       assert index_live
-             |> form("#route-form", route: @update_attrs)
-             |> render_submit()
+        |> form("#route-form", route: @update_attrs)
+        |> render_submit()
 
       assert_patch(index_live, ~p"/routes")
 
@@ -100,8 +100,8 @@ defmodule ParamountLandscapingWeb.RouteLiveTest do
              |> render_change() =~ "can&#39;t be blank"
 
       assert show_live
-             |> form("#route-form", route: @update_attrs)
-             |> render_submit()
+        |> form("#route-form", route: @update_attrs)
+        |> render_submit()
 
       assert_patch(show_live, ~p"/routes/#{route}")
 

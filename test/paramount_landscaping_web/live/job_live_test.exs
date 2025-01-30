@@ -5,7 +5,11 @@ defmodule ParamountLandscapingWeb.JobLiveTest do
   import ParamountLandscaping.JobsFixtures
 
   @create_attrs %{name: "some name", address: "some address", description: "some description"}
-  @update_attrs %{name: "some updated name", address: "some updated address", description: "some updated description"}
+  @update_attrs %{
+    name: "some updated name",
+    address: "some updated address",
+    description: "some updated description"
+  }
   @invalid_attrs %{name: nil, address: nil, description: nil}
 
   defp create_job(_) do
@@ -23,7 +27,7 @@ defmodule ParamountLandscapingWeb.JobLiveTest do
       assert html =~ job.name
     end
 
-    test "saves new job", %{conn: conn} do
+    test "saves new job with line items", %{conn: conn} do
       {:ok, index_live, _html} = live(conn, ~p"/jobs")
 
       assert index_live |> element("a", "New Job") |> render_click() =~
@@ -34,6 +38,7 @@ defmodule ParamountLandscapingWeb.JobLiveTest do
       assert index_live
              |> form("#job-form", job: @invalid_attrs)
              |> render_change() =~ "can&#39;t be blank"
+
 
       assert index_live
              |> form("#job-form", job: @create_attrs)
