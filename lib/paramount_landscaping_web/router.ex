@@ -38,6 +38,20 @@ defmodule ParamountLandscapingWeb.Router do
 
     live "/labors/:id", LaborLive.Show, :show
     live "/labors/:id/show/edit", LaborLive.Show, :edit
+
+    live "/routes", RouteLive.Index, :index
+    live "/routes/new", RouteLive.Index, :new
+    live "/routes/:id/edit", RouteLive.Index, :edit
+
+    live "/routes/:id", RouteLive.Show, :show
+    live "/routes/:id/show/edit", RouteLive.Show, :edit
+
+    live "/stops", StopLive.Index, :index
+    live "/stops/new", StopLive.Index, :new
+    live "/stops/:id/edit", StopLive.Index, :edit
+
+    live "/stops/:id", StopLive.Show, :show
+    live "/stops/:id/show/edit", StopLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.

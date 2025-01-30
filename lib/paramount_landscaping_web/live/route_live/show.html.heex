@@ -1,0 +1,26 @@
+<.header>
+  Route <%= @route.id %>
+  <:subtitle>This is a route record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/routes/#{@route}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit route</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Name"><%= @route.name %></:item>
+</.list>
+
+<.back navigate={~p"/routes"}>Back to routes</.back>
+
+<.modal :if={@live_action == :edit} id="route-modal" show on_cancel={JS.patch(~p"/routes/#{@route}")}>
+  <.live_component
+    module={ParamountLandscapingWeb.RouteLive.FormComponent}
+    id={@route.id}
+    title={@page_title}
+    action={@live_action}
+    route={@route}
+    patch={~p"/routes/#{@route}"}
+  />
+</.modal>

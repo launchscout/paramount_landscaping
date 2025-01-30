@@ -1,0 +1,41 @@
+<.header>
+  Listing Routes
+  <:actions>
+    <.link patch={~p"/routes/new"}>
+      <.button>New Route</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="routes"
+  rows={@streams.routes}
+  row_click={fn {_id, route} -> JS.navigate(~p"/routes/#{route}") end}
+>
+  <:col :let={{_id, route}} label="Name"><%= route.name %></:col>
+  <:action :let={{_id, route}}>
+    <div class="sr-only">
+      <.link navigate={~p"/routes/#{route}"}>Show</.link>
+    </div>
+    <.link patch={~p"/routes/#{route}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, route}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: route.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="route-modal" show on_cancel={JS.patch(~p"/routes")}>
+  <.live_component
+    module={ParamountLandscapingWeb.RouteLive.FormComponent}
+    id={@route.id || :new}
+    title={@page_title}
+    action={@live_action}
+    route={@route}
+    patch={~p"/routes"}
+  />
+</.modal>
